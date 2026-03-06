@@ -8,6 +8,8 @@ import pandas as pd
 import json
 import time # benchmarking
 
+pd.set_option('display.max_colwidth', 10)
+
 class Graph(object):
 
     def __init__(self, edge_json, node_size=None, directed=False):
@@ -125,10 +127,10 @@ class Graph(object):
         self._path_counts = defaultdict(lambda: 0)
         self._path_times = defaultdict(list)
 
-    def construct_path(self, dst):
+    def construct_path(self, src, dst):
         path = []
         curr_node = dst
-        while curr_node is not None:
+        while curr_node is not None and not src: 
             path.append(curr_node)
             curr_node = self._parent[curr_node]
         
@@ -155,7 +157,7 @@ class Graph(object):
     def simulation_trial(self, src, dst, iters=10**3):
         for i in range(iters):
             t = self.simulate_gossip_rv(src, dst)
-            path = tuple(self.construct_path(dst))
+            path = tuple(self.construct_path(src, dst))
             self._path_counts[path] = self._path_counts[path] + 1
             self._path_times[path].append(t)
             self.reset_simulation()
@@ -246,7 +248,7 @@ def erdos_renyi_simulation_trial(n, p, src, dst, iters=10**3, **kwargs):
     for i in range(iters):
         h = erdos_renyi(n, p, **kwargs)
         time = h.simulate_gossip_rv(src, dst)
-        path = tuple(h.construct_path(dst))
+        path = tuple(h.construct_path(src, dst)) # Randomly fails here?
         path_counts[path] = path_counts[path] + 1
         path_times[path].append(time)
 
