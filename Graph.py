@@ -130,9 +130,13 @@ class Graph(object):
     def construct_path(self, src, dst):
         path = []
         curr_node = dst
-        while curr_node is not None and not src: 
+        while curr_node is not None: 
+            if curr_node is src:
+                break
             path.append(curr_node)
             curr_node = self._parent[curr_node]
+        
+        path.append(src)
         
         return path
     
