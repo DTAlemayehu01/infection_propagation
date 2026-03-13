@@ -8,6 +8,8 @@ import pandas as pd
 import json
 import time # benchmarking
 
+from tree_source_localization import EdgeDistribution
+
 pd.set_option('display.max_colwidth', 10)
 
 class Graph(object):
@@ -31,6 +33,12 @@ class Graph(object):
         
     def vertices(self):
         return self._graph.keys()
+
+    def sparsity(self):
+        node_count = len(self.vertices())
+        edge_count = len(self.edge_set)
+        max_edge = node_count*(node_count-1)/2
+        return edge_count/max_edge
         
     def add_connections(self, edge_set):
         for node1, node2, wt in edge_set:
@@ -87,7 +95,8 @@ class Graph(object):
                     # check if node has not been simulated/infected
                     if not self._simulated[(infected, new_infection)] and path != np.inf:
                         self._simulated[(infected, new_infection)] = True
-                        edge_delay = rv.rvs() # scipy.stats dependency
+                        rv.sample() # scipy.stats dependency?
+                        edge_delay = rv.delay
                         self._adjency_matrix.loc[infected, new_infection] = edge_delay
                         if (self._directed == False):
                             self._adjency_matrix.loc[new_infection, infected] = edge_delay
@@ -151,8 +160,11 @@ class Graph(object):
                                
     def process_distribution_params(self, function_dict):
         distribution_map = {
-            "E" : expon, # assuming params lambda = 1.0
-            "N" : norm, # assuming unit normal
+            "E" : EdgeDistribution.EdgeDistribution(function_dict['distribution'], function_dict['parameters']),
+            "N" : EdgeDistribution.EdgeDistribution(function_dict['distribution'], function_dict['parameters']),
+            "U" : EdgeDistribution.EdgeDistribution(function_dict['distribution'], function_dict['parameters']),
+            "P" : EdgeDistribution.EdgeDistribution(function_dict['distribution'], function_dict['parameters']),
+            "C" : EdgeDistribution.EdgeDistribution(function_dict['distribution'], function_dict['parameters']),
             "custom" : None, # customRV, # not working
         }
         distribution = distribution_map[function_dict["distribution"]]
@@ -172,19 +184,22 @@ class Graph(object):
         for times in self._path_times.values():
             full_data = full_data + times
         path_count = len(self._path_times.keys())
-        fig, axs = plt.subplots(2, 1, figsize=(16, 4*(2 + path_count)))
-        axs[0].hist(full_data, bins="rice") #, 
+        fig, axs = plt.subplots(2, 1, figsize=(16, 4*(1 + path_count)), gridspec_kw={'height_ratios': [1, path_count]})
+        _,_,bars = axs[0].hist(full_data, bins="rice") #, 
         axs[0].set_title("Infection time distribution, all paths")
+        axs[0].bar_label(bars)
         path_names = [f"{path}" for path in self._path_counts.keys()]
-        axs[1].barh(path_names, list(self._path_counts.values()))
+        bar = axs[1].barh(path_names, list(self._path_counts.values()))
+        axs[1].bar_label(bar)
         axs[1].set_title("Path distribution")
 
     def produce_extended_histograms(self):
         path_count = len(self._path_times.keys())
-        fig, axs = plt.subplots(path_count, 1, figsize=(16, 4*(2 + path_count)))
+        fig, axs = plt.subplots(path_count, 1, figsize=(16, 4*(1+  path_count)))
         for i, path in enumerate(self._path_times.keys()):
-            axs[i].hist(self._path_times[path], bins="rice")
+            _,_,bars = axs[i].hist(self._path_times[path], bins="rice")
             axs[i].set_title(f"Infection time distribution, condtioned on path {path}")
+            axs[i].bar_label(bars)
                                
     # Faster
     def is_connected(self):
@@ -239,7 +254,7 @@ def erdos_renyi_generator(n, p, edge_dst=None, directed=False):
             if edge_dst is not None and edge_paring in edge_dst.keys():
                 edge_set[edge_paring] = edge_dst[edge_paring]
             else:
-                edge_set[edge_paring] = {"distribution": "E", "parameters": {"lambda" : 1}}
+                edge_set[edge_paring] = { "distribution": "E", "parameters": { "lambda" : 1.0 }}
     if not edge_set:
         return erdos_renyi_generator(n,p, edge_dst=edge_dst, directed=directed)
     else:
@@ -265,17 +280,20 @@ def produce_histograms(path_counts, path_times):
     for times in path_times.values():
         full_data = full_data + times
     path_count = len(path_times.keys())
-    fig, axs = plt.subplots(2, 1, figsize=(16, 4*(2 + path_count)))
-    axs[0].hist(full_data, bins="rice") #, 
+    fig, axs = plt.subplots(2, 1, figsize=(16, 4*(1 + path_count)), gridspec_kw={'height_ratios': [1, path_count]})
+    _,_,bars = axs[0].hist(full_data, bins="rice") #, 
     axs[0].set_title("Infection time distribution, all paths")
+    axs[0].bar_label(bars)
     path_names = [f"{path}" for path in path_counts.keys()]
-    axs[1].barh(path_names, list(path_counts.values()))
+    bar = axs[1].barh(path_names, list(path_counts.values()))
+    axs[1].bar_label(bar)
     axs[1].set_title("Path distribution")
 
 # Assuming Dict Data
 def produce_extended_histograms(path_counts, path_times):
     path_count = len(path_times.keys())
-    fig, axs = plt.subplots(path_count, 1, figsize=(16, 4*(2 + path_count)))
+    fig, axs = plt.subplots(path_count, 1, figsize=(16, 4*(1 + path_count)))
     for i, path in enumerate(path_times.keys()):
-        axs[i].hist(path_times[path], bins="rice")
+        _,_,bars = axs[i].hist(path_times[path], bins="rice")
         axs[i].set_title(f"Infection time distribution, condtioned on path {path}")
+        axs[i].bar_label(bars)
