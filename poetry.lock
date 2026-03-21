@@ -801,6 +801,22 @@ files = [
 ]
 
 [[package]]
+name = "tree-source-localization"
+version = "1.0.4"
+description = "A package for source localization on tree infection networks"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "tree_source_localization-1.0.4-py3-none-any.whl", hash = "sha256:805a273ad072aa00125a0c41d6480ef4dd396167f6a454d02f716f78c35edf30"},
+    {file = "tree_source_localization-1.0.4.tar.gz", hash = "sha256:2dfdafc117ed75f572f16dbe0584745eece98916b478a4e2a719e9b660510ed0"},
+]
+
+[package.dependencies]
+numpy = "*"
+scipy = "*"
+
+[[package]]
 name = "tzdata"
 version = "2025.3"
 description = "Provider of IANA time zone data"
@@ -816,4 +832,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14"
-content-hash = "8c628c1f77a67bdeca2e92b1846f4d329b9186cc2d204afaeac634712225205f"
+content-hash = "14b5ece7ffc1519d72df932456c277d04116ca7fb6d233ef1da4131d1fc07cc9"

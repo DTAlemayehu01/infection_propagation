@@ -5,13 +5,14 @@ description = "Infection Propagation on Networks with Random Edges and Edge Weig
 authors = [
     {name = "DTAlemayehu01",email = "daniel.alemayehu@colorado.edu"}
 ]
-license = {text = "GPL-3.0-or-later"}
+license = "GPL-3.0-or-later"
 requires-python = ">=3.14"
 dependencies = [
     "numpy (>=2.4.3,<3.0.0)",
     "pandas (>=3.0.1,<4.0.0)",
     "scipy (>=1.17.1,<2.0.0)",
-    "matplotlib (>=3.10.8,<4.0.0)"
+    "matplotlib (>=3.10.8,<4.0.0)",
+    "tree-source-localization (>=1.0.4,<2.0.0)"
 ]
 
 
