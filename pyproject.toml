@@ -1,0 +1,21 @@
+[project]
+name = "infection-propagation"
+version = "0.1.0"
+readme = "README.md"
+description = "Infection Propagation on Networks with Random Edges and Edge Weights"
+authors = [
+    { name = "Daniel Alemayehu", email = "daniel.alemayehu@colorado.edu" }
+]
+license = "GPL-3.0-or-later"
+requires-python = ">=3.8"
+dependencies = [
+	"collections",
+	"scipy",
+	"itertools",
+    "numpy",
+	"matplotlib",
+	"pandas"
+	"json"
+	"time"
+]
+
