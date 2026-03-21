@@ -1,0 +1,14 @@
+# Byte-Compiled folders
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+migenv/
+venv/
+ENV/
+env.bak/
+venv.bak/
