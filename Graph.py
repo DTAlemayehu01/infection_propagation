@@ -9,6 +9,7 @@ import json
 import time # benchmarking
 
 from tree_source_localization import EdgeDistribution
+import Figures
 
 pd.set_option('display.max_colwidth', 10)
 
@@ -178,6 +179,7 @@ class Graph(object):
             self._path_times[path].append(t)
             self.reset_simulation()
             
+    # TODO: Depricate
     def produce_histograms(self):
         compound_data = [times for times in self._path_times.values()] # unflattened data
         full_data = [] # flattened datea
@@ -193,6 +195,7 @@ class Graph(object):
         axs[1].bar_label(bar)
         axs[1].set_title("Path distribution")
 
+    # TODO: Depricate
     def produce_extended_histograms(self):
         path_count = len(self._path_times.keys())
         fig, axs = plt.subplots(path_count, 1, figsize=(16, 4*(1+  path_count)))
@@ -270,7 +273,6 @@ def erdos_renyi_simulation_trial(n, p, src, dst, iters=10**3, **kwargs):
         path = tuple(h.construct_path(src, dst)) # Randomly fails here?
         path_counts[path] = path_counts[path] + 1
         path_times[path].append(time)
-
     return path_counts, path_times
 
 # Assuming Dict Data
