@@ -12,7 +12,8 @@ def time_distribution(path_times):
     
 def path_distribution(path_counts):
     path_names = [f"{path}" for path in path_counts.keys()]
-    bar = plt.barh(path_names, list(path_counts.values()))
+    # plt.figure(figsize=(5, (len(path_names)-2)*0.5))
+    bar = plt.barh(path_names, list(path_counts.values()), height=1)
     plt.bar_label(bar)
     plt.title("Path distribution")
 

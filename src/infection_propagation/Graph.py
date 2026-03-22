@@ -41,7 +41,7 @@ class Graph(object):
         return edge_count/max_edge
     
     def avg_degree(self):
-        degrees = np.array([len(self._graph[key] for keys in self.vertices())])
+        degrees = np.array([len(self._graph[key]) for key in self.vertices()])
         avg = degrees.mean()
         return avg
         
