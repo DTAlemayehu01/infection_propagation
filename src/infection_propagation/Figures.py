@@ -7,14 +7,14 @@ def time_distribution(path_times):
     for times in path_times.values():
         full_data = full_data + times
     _,_,bars = plt.hist(full_data, bins="rice") #, 
-    plt.set_title("Infection time distribution, all paths")
+    plt.title("Infection time distribution, all paths")
     plt.bar_label(bars)
     
 def path_distribution(path_counts):
     path_names = [f"{path}" for path in path_counts.keys()]
     bar = plt.barh(path_names, list(path_counts.values()))
     plt.bar_label(bar)
-    plt.set_title("Path distribution")
+    plt.title("Path distribution")
 
 # Assuming Dict Data
 def time_per_path(path_times):

@@ -34,11 +34,16 @@ class Graph(object):
     def vertices(self):
         return self._graph.keys()
 
-    def sparsity(self):
+    def edge_density(self):
         node_count = len(self.vertices())
         edge_count = len(self.edge_set)
         max_edge = node_count*(node_count-1)/2
         return edge_count/max_edge
+    
+    def avg_degree(self):
+        degrees = np.array([len(self._graph[key] for keys in self.vertices())])
+        avg = degrees.mean()
+        return avg
         
     def add_connections(self, edge_set):
         for node1, node2, wt in edge_set:
