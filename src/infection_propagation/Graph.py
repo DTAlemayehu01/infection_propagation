@@ -163,6 +163,7 @@ class Graph(object):
             edge_set.add(edge_tuple)
         return edge_set
                                
+    # TODO: Implement Custom RV
     def process_distribution_params(self, function_dict):
         distribution_map = {
             "E" : EdgeDistribution.EdgeDistribution(function_dict['distribution'], function_dict['parameters']),
@@ -183,31 +184,6 @@ class Graph(object):
             self._path_times[path].append(t)
             self.reset_simulation()
             
-    # TODO: Depricate
-    def produce_histograms(self):
-        compound_data = [times for times in self._path_times.values()] # unflattened data
-        full_data = [] # flattened datea
-        for times in self._path_times.values():
-            full_data = full_data + times
-        path_count = len(self._path_times.keys())
-        fig, axs = plt.subplots(2, 1, figsize=(16, 4*(1 + path_count)), gridspec_kw={'height_ratios': [1, path_count]})
-        _,_,bars = axs[0].hist(full_data, bins="rice") #, 
-        axs[0].set_title("Infection time distribution, all paths")
-        axs[0].bar_label(bars)
-        path_names = [f"{path}" for path in self._path_counts.keys()]
-        bar = axs[1].barh(path_names, list(self._path_counts.values()))
-        axs[1].bar_label(bar)
-        axs[1].set_title("Path distribution")
-
-    # TODO: Depricate
-    def produce_extended_histograms(self):
-        path_count = len(self._path_times.keys())
-        fig, axs = plt.subplots(path_count, 1, figsize=(16, 4*(1+  path_count)))
-        for i, path in enumerate(self._path_times.keys()):
-            _,_,bars = axs[i].hist(self._path_times[path], bins="rice")
-            axs[i].set_title(f"Infection time distribution, condtioned on path {path}")
-            axs[i].bar_label(bars)
-                               
     # Faster
     def is_connected(self):
         visited = set()
@@ -278,28 +254,3 @@ def erdos_renyi_simulation_trial(n, p, src, dst, iters=10**3, **kwargs):
         path_counts[path] = path_counts[path] + 1
         path_times[path].append(time)
     return path_counts, path_times
-
-# Assuming Dict Data
-def produce_histograms(path_counts, path_times):
-    compound_data = [times for times in path_times.values()] # unflattened data
-    full_data = [] # flattened datea
-    for times in path_times.values():
-        full_data = full_data + times
-    path_count = len(path_times.keys())
-    fig, axs = plt.subplots(2, 1, figsize=(16, 4*(1 + path_count)), gridspec_kw={'height_ratios': [1, path_count]})
-    _,_,bars = axs[0].hist(full_data, bins="rice") #, 
-    axs[0].set_title("Infection time distribution, all paths")
-    axs[0].bar_label(bars)
-    path_names = [f"{path}" for path in path_counts.keys()]
-    bar = axs[1].barh(path_names, list(path_counts.values()))
-    axs[1].bar_label(bar)
-    axs[1].set_title("Path distribution")
-
-# Assuming Dict Data
-def produce_extended_histograms(path_counts, path_times):
-    path_count = len(path_times.keys())
-    fig, axs = plt.subplots(path_count, 1, figsize=(16, 4*(1 + path_count)))
-    for i, path in enumerate(path_times.keys()):
-        _,_,bars = axs[i].hist(path_times[path], bins="rice")
-        axs[i].set_title(f"Infection time distribution, condtioned on path {path}")
-        axs[i].bar_label(bars)
