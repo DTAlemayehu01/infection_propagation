@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import json
 import time # benchmarking
+import heapq
 
 from tree_source_localization import EdgeDistribution
 
@@ -126,6 +127,93 @@ class Graph(object):
             for node in dst:
                 if self._infected[node]:
                     return global_t
+                
+    # Algorithms bidirectional bfs vs reg
+    # Single SRC, Single DST
+    # Lowk unhelpful optional settings, to integrate later?
+    # Undirected at first
+    # Expand to the procedural simulation
+    def sim_all(self, reset = False):
+        if reset:
+            self.reset_simulation()
+        for i in self.vertices():
+            for j in self.vertices():
+                if i >= j and type(self._adjency_matrix.loc[i,j]) == EdgeDistribution.EdgeDistribution:
+                    self._adjency_matrix.loc[i,j].sample()
+                    delay = self._adjency_matrix.loc[i,j].delay
+                    self._adjency_matrix.loc[i,j] = delay
+                    self._adjency_matrix.loc[j,i] = delay
+
+    def algo_jump(self, src, dst, log=False, algorithm="bidir", all_edge=True):
+        if algorithm == "bidir":
+            return self.sim_all_bidir_helper(src, dst)
+        else:
+            return self.sim_all_dijsktra_helper(src, dst)
+
+
+    def sim_all_bidir_helper(self, src, dst):
+        pq_src = []
+        pq_dst = []
+        
+        heapq.heappush(pq_src, (0, src))
+        heapq.heappush(pq_dst, (0, dst))
+        
+        dist_src = defaultdict(lambda: np.inf)
+        dist_src[src] = 0
+
+        dist_dst = defaultdict(lambda: np.inf)
+        dist_dst[dst] = 0
+        
+        while pq_src and pq_dst:
+            v_src = heapq.heappop(pq_src)[1]
+            v_dst = heapq.heappop(pq_dst)[1]
+
+            mu = np.inf
+            for u in self.vertices():
+                item = self._adjency_matrix.loc[v_src,u]
+                if item != np.inf:
+                    alt = dist_src[v_src] + item
+                    if alt < dist_src[u]:
+                        self._parent[u] = v_src
+                        print(self._parent)
+                        dist_src[u] = alt
+                        heapq.heappush(pq_src, (alt, u))
+                    if u in dist_dst.keys() and dist_src[v_src] + item + dist_dst[u] < mu:
+                        mu = dist_src[v_src] + item + dist_dst[u]
+
+            for u in self.vertices():
+                item = self._adjency_matrix.loc[v_dst,u]
+                if item != np.inf:
+                    alt = dist_dst[v_dst] + item
+                    if alt < dist_dst[u]:
+                        self._parent[v_dst] = u
+                        print(self._parent)
+                        dist_dst[u] = alt
+                        heapq.heappush(pq_dst, (alt, u))
+                    if u in dist_src.keys() and dist_dst[v_dst] + item + dist_src[u] < mu:
+                        mu = dist_dst[v_dst] + item + dist_src[u]
+            if dist_src[v_src] + dist_dst[v_dst] >= mu:
+                return mu
+                        
+    def sim_all_dijsktra_helper(self, src, dst):
+        pq = []
+        heapq.heappush(pq, (0, src))
+        
+        dist = defaultdict(lambda: np.inf)
+        dist[src] = 0
+        
+        while pq:
+            v = heapq.heappop(pq)[1]
+            if v == dst:
+                return dist[v]
+            for u in self.vertices():
+                item = self._adjency_matrix.loc[v,u]
+                if item != np.inf:
+                    alt = dist[v] + item
+                    if alt < dist[u]:
+                        self._parent[u] = v
+                        dist[u] = alt
+                        heapq.heappush(pq, (alt, u))
 
     def reset_simulation(self):
         keys = self.vertices()

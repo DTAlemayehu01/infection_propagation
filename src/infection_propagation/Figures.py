@@ -14,10 +14,9 @@ def time_distribution(path_times):
     plt.title("Infection time distribution, all paths")
     plt.bar_label(bars)
     
-def path_distribution(path_counts, threshold=1):
+def path_distribution(path_counts, threshold=1, h=0.5):
     path_names = [f"{path}" for path in path_counts.keys()]
-    plt.figure(figsize=(8, (len(path_names))*0.01))
-    plt.margins(y=0)
+    # Threshold
     path_names_reduced = []
     path_counts_reduced = []
     if threshold != 1:
@@ -28,7 +27,10 @@ def path_distribution(path_counts, threshold=1):
     else:
         path_names_reduced = path_names
         path_counts_reduced = list(path_counts.values())
-    bar = plt.barh(path_names_reduced, path_counts_reduced)
+    # Plotting
+    plt.figure(figsize=(8, len(path_names_reduced)*h))
+    plt.margins(y=0)
+    bar = plt.barh(path_names_reduced, path_counts_reduced, height=h) # Bar Height?
     plt.bar_label(bar)
     plt.title("Path distribution")
 
