@@ -67,7 +67,9 @@ class Graph(object):
         return df
 
     # Make sure graph is using scipy.stats library
-    def simulate_gossip_rv(self, src, dst, log=False):
+    # TODO: Use heapq
+    # TODO: Refactor
+    def simulate_gossip_rv(self, src, dst, log=False, preserve_times=False):
         self.reset_simulation()
         
         if not self.is_connected:
@@ -83,6 +85,9 @@ class Graph(object):
             
         if ((self._adjency_matrix.loc[src] == np.inf).all()).all():
             raise ValueError(f"Source node {src} is not in the graph")
+        
+        if preserve_times == True:
+            adj_matrix_dupe = self._adjency_matrix.copy()
         
         terminate = False
         while not terminate:
@@ -104,8 +109,12 @@ class Graph(object):
                         rv.sample() # scipy.stats dependency?
                         edge_delay = rv.delay
                         self._adjency_matrix.loc[infected, new_infection] = edge_delay
+                        if preserve_times == True:
+                            adj_matrix_dupe.loc[infected, new_infection] = edge_delay
                         if (self._directed == False):
                             self._adjency_matrix.loc[new_infection, infected] = edge_delay
+                            if preserve_times == True:
+                                adj_matrix_dupe.loc[new_infection, infected] = edge_delay
                             self._simulated[(new_infection, infected)] = True
                         if log==True:
                             display(self._adjency_matrix)
@@ -126,6 +135,8 @@ class Graph(object):
             global_t = global_t + min_infect_time
             for node in dst:
                 if self._infected[node]:
+                    if preserve_times == True:
+                        self._adjency_matrix = adj_matrix_dupe
                     return global_t
                 
     # Algorithms bidirectional bfs vs reg
@@ -151,6 +162,7 @@ class Graph(object):
             return self.sim_all_dijsktra_helper(src, dst)
 
 
+    # Assume Single SRC and DST
     def sim_all_bidir_helper(self, src, dst):
         pq_src = []
         pq_dst = []
@@ -160,41 +172,52 @@ class Graph(object):
         
         dist_src = defaultdict(lambda: np.inf)
         dist_src[src] = 0
+        # parent_src = defaultdict(lambda : None)
 
         dist_dst = defaultdict(lambda: np.inf)
         dist_dst[dst] = 0
+        parent_dst = defaultdict(lambda : None)
         
+        mu = np.inf
+        meeting_node = None
         while pq_src and pq_dst:
             v_src = heapq.heappop(pq_src)[1]
             v_dst = heapq.heappop(pq_dst)[1]
 
-            mu = np.inf
             for u in self.vertices():
                 item = self._adjency_matrix.loc[v_src,u]
                 if item != np.inf:
                     alt = dist_src[v_src] + item
                     if alt < dist_src[u]:
                         self._parent[u] = v_src
-                        print(self._parent)
                         dist_src[u] = alt
                         heapq.heappush(pq_src, (alt, u))
                     if u in dist_dst.keys() and dist_src[v_src] + item + dist_dst[u] < mu:
                         mu = dist_src[v_src] + item + dist_dst[u]
+                        meeting_node = u
 
             for u in self.vertices():
                 item = self._adjency_matrix.loc[v_dst,u]
                 if item != np.inf:
                     alt = dist_dst[v_dst] + item
                     if alt < dist_dst[u]:
-                        self._parent[v_dst] = u
-                        print(self._parent)
+                        parent_dst[u] = v_dst
                         dist_dst[u] = alt
                         heapq.heappush(pq_dst, (alt, u))
                     if u in dist_src.keys() and dist_dst[v_dst] + item + dist_src[u] < mu:
                         mu = dist_dst[v_dst] + item + dist_src[u]
+                        meeting_node = u
+
             if dist_src[v_src] + dist_dst[v_dst] >= mu:
+                # see if we share edge with optimal path to reconstruct backwards path
+                if meeting_node is not None:
+                    node = meeting_node
+                    while parent_dst[node] is not None:
+                        self._parent[parent_dst[node]] = node
+                        node = parent_dst[node]
                 return mu
                         
+    # Assume Single SRC and DST
     def sim_all_dijsktra_helper(self, src, dst):
         pq = []
         heapq.heappush(pq, (0, src))

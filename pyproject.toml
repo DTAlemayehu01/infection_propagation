@@ -1,5 +1,5 @@
 [project]
-name = "infection-propagation"
+name = "infection_propagation"
 version = "0.1.0"
 description = "Infection Propagation on Networks with Random Edges and Edge Weights"
 authors = [
