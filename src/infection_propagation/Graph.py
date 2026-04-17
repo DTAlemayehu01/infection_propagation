@@ -89,18 +89,17 @@ class Graph(object):
             self._infected[node] = True
             self._node_infect_time[node] = 0
             
-        if ((self._adjency_matrix.loc[src] == np.inf).all()).all():
-            raise ValueError(f"Source node {src} is not in the graph")
-        
+        if not set(src).issubset(self.vertices()):
+            raise ValueError(f"A source node {src} is not in the graph")
+        if not set(dst).issubset(self.vertices()):
+            raise ValueError(f"A destination node {dst} is not in the graph")
+
         if preserve_times == True:
             adj_matrix_dupe = self._adjency_matrix.copy()
         
         terminate = False
         while not terminate:
             current_tick_infected = [infected for infected in self._infected.keys() if self._infected[infected] == True]
-
-            if ((self._adjency_matrix.loc[np.array(current_tick_infected)] == np.inf).all()).all():
-                raise ValueError("No path to dst")
 
             min_edge = None
             min_infect_time = np.inf
