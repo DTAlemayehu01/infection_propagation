@@ -13,11 +13,15 @@ from tree_source_localization import EdgeDistribution
 
 pd.set_option('display.max_colwidth', 10)
 
+class ERMaxAttempts(Exception):
+    pass
+
 class Graph(object):
 
-    def __init__(self, edge_json, node_size=None, directed=False):
+    def __init__(self, edge_json, directed=False):
         # graph data structures
         self._graph = defaultdict(set)
+        self.connected = None
         # Node information
         self._infected = defaultdict(lambda : False) 
         self._simulated = defaultdict(lambda : False) 
@@ -51,6 +55,7 @@ class Graph(object):
             self.add_edge(node1,node2, wt)
             
     def add_edge(self, src, dst, wt):
+        self.connected = None
         self._graph[src].add((dst, wt))
         if self._directed == False:
             self._graph[dst].add((src, wt))
@@ -72,10 +77,11 @@ class Graph(object):
     def simulate_gossip_rv(self, src, dst, log=False, preserve_times=False):
         self.reset_simulation()
         
-        if not self.is_connected:
+        if not self.connected:
             raise RuntimeError("Graph is not connected, generate a new graph")
 
-        src = np.array([src]).flatten() # transform scalars and lists to iterables
+        # transform scalars and lists to iterables
+        src = np.array([src]).flatten() 
         dst = np.array([dst]).flatten()
         global_t = 0
         
@@ -91,7 +97,7 @@ class Graph(object):
         
         terminate = False
         while not terminate:
-            current_tick_infected = [key for key in self._infected.keys() if self._infected[key] == True]
+            current_tick_infected = [infected for infected in self._infected.keys() if self._infected[infected] == True]
 
             if ((self._adjency_matrix.loc[np.array(current_tick_infected)] == np.inf).all()).all():
                 raise ValueError("No path to dst")
@@ -295,8 +301,10 @@ class Graph(object):
             self._path_times[path].append(t)
             self.reset_simulation()
             
-    # Faster
     def is_connected(self):
+        if self.connected is not None:
+            return self.connected
+
         visited = set()
         node_list = set(self.vertices())
         current = node_list.pop()
@@ -308,7 +316,9 @@ class Graph(object):
             if frontier: # empty check
                 current = frontier.pop()
             else:
-                return visited == node_list
+                connection = visited == node_list
+                self.connected = connection
+                return connection
             
     # Laplacian depends on whether we choose out vs in degree matrix
     def is_connected_laplacian(self):
@@ -327,12 +337,13 @@ class Graph(object):
         return lambda_0 == 1
     
 
-def erdos_renyi(n, p, force_connection=True, **kwargs):
-    h = erdos_renyi_generator(n, p, **kwargs)
-    if force_connection and h.is_connected() and n == len(h.vertices()):
-        return h
-    else:
-        return erdos_renyi(n, p, force_connection=force_connection, **kwargs)
+def erdos_renyi(n, p, force_connection=True, max_attempts=10**3, **kwargs):
+    G = erdos_renyi_generator(n, p, **kwargs)
+    for _ in range(max_attempts):
+        if G.is_connected() and n == len(G.vertices()):
+            return G
+        G = erdos_renyi_generator(n, p, **kwargs)
+    raise ERMaxAttempts("ER Graph not created, max attempts reached")
     
 def erdos_renyi_generator(n, p, edge_dst=None, directed=False):
     verticies = list(range(n))
@@ -347,12 +358,10 @@ def erdos_renyi_generator(n, p, edge_dst=None, directed=False):
         if np.random.random() < p and pair[0] != pair[1]:
             if edge_dst is not None and edge_paring in edge_dst.keys():
                 edge_set[edge_paring] = edge_dst[edge_paring]
-            else:
-                edge_set[edge_paring] = { "distribution": "E", "parameters": { "lambda" : 1.0 }}
-    if not edge_set:
-        return erdos_renyi_generator(n,p, edge_dst=edge_dst, directed=directed)
-    else:
-        return Graph(edge_set, directed=directed)
+            # Default
+            else: 
+                edge_set[edge_paring] = { "distribution": "E", "parameters": { "lambda" : 1.0 }} 
+    return Graph(edge_set, directed=directed)
     
 # assuming we're forcing connectivity in ER
 def erdos_renyi_simulation_trial(n, p, src, dst, iters=10**3, **kwargs):
