@@ -1,0 +1,1703 @@
+{
+    "120,227": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 15.0,
+            "sigma2": 0.1
+        }
+    },
+    "100,229": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "99,230": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "98,230": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "97,234": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "95,233": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "96,234": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "94,232": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "93,231": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "92,226": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "91,225": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "90,225": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "111,238": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "112,238": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "113,239": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "114,239": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "119,241": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "118,241": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "117,243": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "116,243": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "115,242": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "110,235": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "89,220": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "88,222": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "87,223": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "81,213": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "80,213": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "79,212": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "78,211": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "77,210": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "86,219": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "85,216": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "84,216": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "83,244": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "82,244": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "76,209": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "75,208": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "74,208": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "73,206": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "72,204": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "71,193": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "69,191": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "66,190": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "67,190": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "68,189": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 10.0,
+            "sigma2": 0.1
+        }
+    },
+    "65,188": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "64,187": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "63,186": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "62,186": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "61,185": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "60,184": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "59,182": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "58,180": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "57,181": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "56,179": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "55,178": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "54,176": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "41,164": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "40,163": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "43,166": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "42,165": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "47,170": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "48,171": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "49,172": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "50,173": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "51,174": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "52,175": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "53,175": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "45,169": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "46,169": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "44,168": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "38,160": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "37,159": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "35,157": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "34,156": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "33,155": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "36,158": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "39,161": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "70,192": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "101,195": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "102,197": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "103,199": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "104,199": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "106,201": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "107,203": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "108,203": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "109,202": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 10.0,
+            "sigma2": 0.1
+        }
+    },
+    "105,200": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "25,153": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "24,153": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 10.0,
+            "sigma2": 0.1
+        }
+    },
+    "26,145": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "27,145": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "28,146": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "29,147": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "30,151": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "31,151": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "32,152": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "23,142": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "22,141": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "21,140": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "20,138": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "19,138": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "18,137": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "17,125": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "11,127": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "10,128": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "9,129": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "8,131": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "7,131": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "5,133": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "6,133": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "3,135": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "4,134": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "2,136": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "1,136": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "12,121": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 10.0,
+            "sigma2": 0.1
+        }
+    },
+    "13,121": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "14,123": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "15,124": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "16,124": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "124,123": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "123,122": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 7.0,
+            "sigma2": 0.1
+        }
+    },
+    "121,122": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "122,125": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "125,126": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "138,139": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "136,135": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "135,134": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "134,132": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "132,133": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "132,130": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "131,130": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "130,129": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "129,128": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "128,127": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "127,126": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "126,137": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "137,139": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "139,140": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "140,141": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "141,142": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "142,143": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "152,150": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "151,150": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "150,149": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "149,148": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "148,147": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "147,146": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 7.0,
+            "sigma2": 0.1
+        }
+    },
+    "146,144": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "145,144": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "144,143": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "143,154": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 7.0,
+            "sigma2": 0.1
+        }
+    },
+    "153,154": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "154,155": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "155,156": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "156,157": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "157,158": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "158,159": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "159,160": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "160,161": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "161,162": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "169,168": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "168,167": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 10.0,
+            "sigma2": 0.1
+        }
+    },
+    "175,174": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "174,173": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "173,172": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "172,171": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "170,171": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "170,167": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "167,166": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "166,165": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "165,164": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "163,164": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "163,162": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "162,176": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "176,177": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "234,233": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "233,232": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "232,231": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "231,228": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "230,229": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "229,228": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "228,227": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "227,226": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "226,224": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "225,224": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 7.0,
+            "sigma2": 0.1
+        }
+    },
+    "224,218": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "223,222": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "222,221": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "221,220": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "220,219": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "219,218": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 2.0,
+            "sigma2": 0.1
+        }
+    },
+    "218,217": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 10.0,
+            "sigma2": 0.1
+        }
+    },
+    "203,202": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "202,196": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 10.0,
+            "sigma2": 0.1
+        }
+    },
+    "201,200": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "200,198": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "199,198": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "198,197": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "197,196": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "196,195": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 8.0,
+            "sigma2": 0.1
+        }
+    },
+    "195,194": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "241,240": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "243,242": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "242,240": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "240,236": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "238,237": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "239,237": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "237,236": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "236,235": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 7.0,
+            "sigma2": 0.1
+        }
+    },
+    "235,217": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "217,214": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 7.0,
+            "sigma2": 0.1
+        }
+    },
+    "216,215": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "244,215": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "215,214": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "214,205": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "213,212": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "212,211": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "211,210": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 10.0,
+            "sigma2": 0.1
+        }
+    },
+    "210,209": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "209,207": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "208,207": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "207,206": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "206,205": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "205,204": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "204,194": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "194,193": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "193,192": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "192,191": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "191,177": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "177,178": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "178,179": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "179,180": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 3.0,
+            "sigma2": 0.1
+        }
+    },
+    "181,180": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "180,182": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 4.0,
+            "sigma2": 0.1
+        }
+    },
+    "182,183": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "186,185": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "185,184": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "184,183": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "183,187": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "187,188": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    },
+    "188,189": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 6.0,
+            "sigma2": 0.1
+        }
+    },
+    "189,190": {
+        "distribution": "N",
+        "parameters": {
+            "mu": 5.0,
+            "sigma2": 0.1
+        }
+    }
+}

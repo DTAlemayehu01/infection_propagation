@@ -77,13 +77,12 @@ class Graph(object):
     def simulate_gossip_rv(self, src, dst, log=False, preserve_times=False):
         self.reset_simulation()
         
-        if not self.connected:
-            raise RuntimeError("Graph is not connected, generate a new graph")
+        # if not self.connected:
+        #     raise RuntimeError("Graph is not connected, generate a new graph")
 
         # transform scalars and lists to iterables
         src = np.array([src]).flatten() 
         dst = np.array([dst]).flatten()
-        global_t = 0
         
         for node in src:
             self._infected[node] = True
@@ -96,36 +95,38 @@ class Graph(object):
 
         if preserve_times == True:
             adj_matrix_dupe = self._adjency_matrix.copy()
-        
-        terminate = False
-        while not terminate:
+
+        global_t = 0
+        infection_frontier = []
+
+        while True:
             current_tick_infected = [infected for infected in self._infected.keys() if self._infected[infected] == True]
 
             min_edge = None
             min_infect_time = np.inf
             for infected in current_tick_infected:
                 # simulate new frontier infections
-                for col, rv in enumerate(self._adjency_matrix.loc[infected]):
-                    new_infection = self._adjency_matrix.columns[col]
-                    path = self._adjency_matrix.loc[infected, new_infection]
+                for infect_idx, weight in enumerate(self._adjency_matrix.loc[infected]):
+                    new_infection = self._adjency_matrix.columns[infect_idx]
+
                     # check if node has not been simulated/infected
-                    if not self._simulated[(infected, new_infection)] and path != np.inf:
-                        self._simulated[(infected, new_infection)] = True
-                        rv.sample() # scipy.stats dependency?
-                        edge_delay = rv.delay
-                        self._adjency_matrix.loc[infected, new_infection] = edge_delay
+                    if not self._simulated[(infected, new_infection)] and weight != np.inf:
+                        edge_delay = self.simulate_edge(infected, new_infection)
+
                         if preserve_times == True:
                             adj_matrix_dupe.loc[infected, new_infection] = edge_delay
-                        if (self._directed == False):
-                            self._adjency_matrix.loc[new_infection, infected] = edge_delay
-                            if preserve_times == True:
+                            if (self._directed == False):
                                 adj_matrix_dupe.loc[new_infection, infected] = edge_delay
-                            self._simulated[(new_infection, infected)] = True
+
                         if log==True:
                             display(self._adjency_matrix)
-                    if self._adjency_matrix.loc[infected, new_infection] < min_infect_time:
-                        min_infect_time = self._adjency_matrix.loc[infected, new_infection] 
-                        min_edge = (infected, new_infection)
+
+                    weight = self._adjency_matrix.loc[infected, new_infection] 
+                    path = (infected, new_infection)
+                    if weight < min_infect_time:
+                        min_infect_time = weight
+                        min_edge = path
+
             if self._parent[min_edge[1]] == None:
                 self._parent[min_edge[1]] = min_edge[0]
                 self._node_infect_time[min_edge[1]] = min_infect_time
@@ -135,14 +136,98 @@ class Graph(object):
             if self._directed == False:
                 self._adjency_matrix.loc[min_edge[1], min_edge[0]] = np.inf
                 self._adjency_matrix.loc[:, current_tick_infected] = self._adjency_matrix.loc[:, current_tick_infected].sub(min_infect_time)
+
             if log==True:
                 display(self._adjency_matrix)
+
             global_t = global_t + min_infect_time
+
             for node in dst:
                 if self._infected[node]:
                     if preserve_times == True:
                         self._adjency_matrix = adj_matrix_dupe
                     return global_t
+                
+    # Assuming single src/dst
+    def birectional_simulate_gossip_rv(self, src, dst, log=False, preserve_times=False):
+        self.reset_simulation()
+
+        if not set(src).issubset(self.vertices()):
+            raise ValueError(f"A source node {src} is not in the graph")
+        if not set(dst).issubset(self.vertices()):
+            raise ValueError(f"A destination node {dst} is not in the graph")
+
+        if preserve_times == True:
+            adj_matrix_dupe = self._adjency_matrix.copy()
+
+        self._infected[src] = True
+        self._node_infect_time[src] = 0
+
+        global_t = 0
+        infection_frontier = []
+        infection_frontier_backwards = []
+        
+        while True:
+            current_tick_infected = [infected for infected in self._infected.keys() if self._infected[infected] == True]
+
+            min_edge = None
+            min_infect_time = np.inf
+            for infected in current_tick_infected:
+                # simulate new frontier infections
+                for infect_idx, weight in enumerate(self._adjency_matrix.loc[infected]):
+                    new_infection = self._adjency_matrix.columns[infect_idx]
+
+                    # check if node has not been simulated/infected
+                    if not self._simulated[(infected, new_infection)] and weight != np.inf:
+                        edge_delay = self.simulate_edge(infected, new_infection)
+
+                        if preserve_times == True:
+                            adj_matrix_dupe.loc[infected, new_infection] = edge_delay
+                            if (self._directed == False):
+                                adj_matrix_dupe.loc[new_infection, infected] = edge_delay
+
+                        if log==True:
+                            display(self._adjency_matrix)
+
+                    weight = self._adjency_matrix.loc[infected, new_infection] 
+                    path = (infected, new_infection)
+                    if weight < min_infect_time:
+                        min_infect_time = weight
+                        min_edge = path
+
+            if self._parent[min_edge[1]] == None:
+                self._parent[min_edge[1]] = min_edge[0]
+                self._node_infect_time[min_edge[1]] = min_infect_time
+                self._infected[min_edge[1]] = True
+            self._adjency_matrix.loc[min_edge[0], min_edge[1]] = np.inf
+            self._adjency_matrix.loc[current_tick_infected] = self._adjency_matrix.loc[current_tick_infected].sub(min_infect_time)
+            if self._directed == False:
+                self._adjency_matrix.loc[min_edge[1], min_edge[0]] = np.inf
+                self._adjency_matrix.loc[:, current_tick_infected] = self._adjency_matrix.loc[:, current_tick_infected].sub(min_infect_time)
+
+            if log==True:
+                display(self._adjency_matrix)
+
+            global_t = global_t + min_infect_time
+
+            for node in dst:
+                if self._infected[node]:
+                    if preserve_times == True:
+                        self._adjency_matrix = adj_matrix_dupe
+                    return global_t
+                
+    def simulate_edge(self, infected, new_infection):
+        self._simulated[(infected, new_infection)] = True
+        rv = self._adjency_matrix.loc[infected, new_infection]
+        rv.sample() # scipy.stats dependency?
+        edge_delay = rv.delay
+        self._adjency_matrix.loc[infected, new_infection] = edge_delay
+
+        if (self._directed == False):
+            self._adjency_matrix.loc[new_infection, infected] = edge_delay
+            self._simulated[(new_infection, infected)] = True
+        
+        return edge_delay
                 
     # Algorithms bidirectional bfs vs reg
     # Single SRC, Single DST
@@ -154,12 +239,10 @@ class Graph(object):
             self.reset_simulation()
         for i in self.vertices():
             for j in self.vertices():
-                if i >= j and type(self._adjency_matrix.loc[i,j]) == EdgeDistribution.EdgeDistribution:
-                    self._adjency_matrix.loc[i,j].sample()
-                    delay = self._adjency_matrix.loc[i,j].delay
-                    self._adjency_matrix.loc[i,j] = delay
-                    self._adjency_matrix.loc[j,i] = delay
+                if not self._simulated[(i,j)] and self._adjency_matrix.loc[i,j] != np.inf:
+                    self.simulate_edge(i,j)
 
+    # :TODO Delete? i was thinking to make a toggle for whether to sim all edges but im not sure anymore
     def algo_jump(self, src, dst, log=False, algorithm="bidir", all_edge=True):
         if algorithm == "bidir":
             return self.sim_all_bidir_helper(src, dst)
@@ -317,7 +400,7 @@ class Graph(object):
             else:
                 connection = visited == node_list
                 self.connected = connection
-                return connection
+                return connection,visited,node_list
             
     # Laplacian depends on whether we choose out vs in degree matrix
     def is_connected_laplacian(self):
