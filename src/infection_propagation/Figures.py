@@ -93,3 +93,12 @@ def nodes_vs_time(path_times):
     plt.ylabel("Infection Time")
     plt.legend()
     return r, p, err
+
+def path_length_histogram(path_counts):
+    path_lens = []
+    for key in path_counts.keys():
+        path_len = len(key)-1
+        path_lens.append(path_len)
+    _,_,bars = plt.hist(path_lens, bins="rice") #, 
+    plt.title("Infection path length distribution")
+    plt.bar_label(bars)

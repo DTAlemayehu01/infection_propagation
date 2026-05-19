@@ -149,7 +149,13 @@ class Graph(object):
                     return global_t
                 
     # Assuming single src/dst
-    def birectional_simulate_gossip_rv(self, src, dst, log=False, preserve_times=False):
+    # OPT!
+    # TODO: Behavior parity with directed simulation
+    # - I'm opting to change behaviors since handling min-edge subtraction
+    # - Is far more complex when searching two directions
+    # - And was done to track time as well
+    # NOTE: Will Always "presevere_time
+    def birectional_simulate_gossip_rv(self, src, dst, log=False):
         self.reset_simulation()
 
         if not set(src).issubset(self.vertices()):
@@ -157,64 +163,82 @@ class Graph(object):
         if not set(dst).issubset(self.vertices()):
             raise ValueError(f"A destination node {dst} is not in the graph")
 
-        if preserve_times == True:
-            adj_matrix_dupe = self._adjency_matrix.copy()
-
         self._infected[src] = True
         self._node_infect_time[src] = 0
 
         global_t = 0
-        infection_frontier = []
+        infection_frontier_forwards = []
         infection_frontier_backwards = []
+ 
+        heapq.heappush(infection_frontier_forwards, (0, src))
+        heapq.heappush(infection_frontier_backwards, (0, dst))
         
-        while True:
-            current_tick_infected = [infected for infected in self._infected.keys() if self._infected[infected] == True]
+        dist_src = defaultdict(lambda: np.inf)
+        dist_src[src] = 0
+        
+        dist_dst = defaultdict(lambda: np.inf)
+        dist_dst[dst] = 0
+        
+        parent_dst = defaultdict(lambda : None)
+        mu = np.inf
+        meeting_node = None
+        while infection_frontier_backwards and infection_frontier_forwards:
+            v_src = heapq.heappop(infection_frontier_forwards)[1]
+            v_dst = heapq.heappop(infection_frontier_backwards)[1]
+            
+            for u in self.vertices():
+                item = self._adjency_matrix.loc[v_src,u]
+                if item != np.inf:
+                    if not self._simulated[(v_src,u)]:
+                        item = self.simulate_edge(v_src, u)
 
-            min_edge = None
-            min_infect_time = np.inf
-            for infected in current_tick_infected:
-                # simulate new frontier infections
-                for infect_idx, weight in enumerate(self._adjency_matrix.loc[infected]):
-                    new_infection = self._adjency_matrix.columns[infect_idx]
+                    alt = dist_src[v_src] + item
+                    if alt < dist_src[u]:
+                        self._parent[u] = v_src
+                        dist_src[u] = alt
+                        heapq.heappush(infection_frontier_forwards, (alt, u))
+                    if u in dist_dst.keys() and dist_src[v_src] + item + dist_dst[u] < mu:
+                        mu = dist_src[v_src] + item + dist_dst[u]
+                        meeting_node = u
+                        
+            for u in self.vertices():
+                item = self._adjency_matrix.loc[v_dst,u]
+                if item != np.inf:
+                    if not self._simulated[(v_dst, u)]:
+                        item = self.simulate_edge(v_dst,u)
 
-                    # check if node has not been simulated/infected
-                    if not self._simulated[(infected, new_infection)] and weight != np.inf:
-                        edge_delay = self.simulate_edge(infected, new_infection)
-
-                        if preserve_times == True:
-                            adj_matrix_dupe.loc[infected, new_infection] = edge_delay
-                            if (self._directed == False):
-                                adj_matrix_dupe.loc[new_infection, infected] = edge_delay
-
-                        if log==True:
-                            display(self._adjency_matrix)
-
-                    weight = self._adjency_matrix.loc[infected, new_infection] 
-                    path = (infected, new_infection)
-                    if weight < min_infect_time:
-                        min_infect_time = weight
-                        min_edge = path
-
-            if self._parent[min_edge[1]] == None:
-                self._parent[min_edge[1]] = min_edge[0]
-                self._node_infect_time[min_edge[1]] = min_infect_time
-                self._infected[min_edge[1]] = True
-            self._adjency_matrix.loc[min_edge[0], min_edge[1]] = np.inf
-            self._adjency_matrix.loc[current_tick_infected] = self._adjency_matrix.loc[current_tick_infected].sub(min_infect_time)
-            if self._directed == False:
-                self._adjency_matrix.loc[min_edge[1], min_edge[0]] = np.inf
-                self._adjency_matrix.loc[:, current_tick_infected] = self._adjency_matrix.loc[:, current_tick_infected].sub(min_infect_time)
-
-            if log==True:
-                display(self._adjency_matrix)
-
-            global_t = global_t + min_infect_time
-
-            for node in dst:
-                if self._infected[node]:
-                    if preserve_times == True:
-                        self._adjency_matrix = adj_matrix_dupe
-                    return global_t
+                    alt = dist_dst[v_dst] + item
+                    if alt < dist_dst[u]:
+                        parent_dst[u] = v_dst
+                        dist_dst[u] = alt
+                        heapq.heappush(infection_frontier_backwards, (alt, u))
+                    if u in dist_src.keys() and dist_dst[v_dst] + item + dist_src[u] < mu:
+                        mu = dist_dst[v_dst] + item + dist_src[u]
+                        meeting_node = u                        
+                        
+            if dist_src[v_src] + dist_dst[v_dst] >= mu:
+                # see if we share edge with optimal path to reconstruct backwards path
+                if meeting_node is not None:
+                    node = meeting_node
+                    while parent_dst[node] is not None:
+                        self._parent[parent_dst[node]] = node
+                        node = parent_dst[node]
+                return self.construct_time_from_path(src, dst)
+            
+    # Input src to track path parity
+    def construct_time_from_path(self, src, dst):
+        father = self._parent[dst]
+        son = dst
+        global_t = 0
+        while father:
+            global_t = global_t + self._adjency_matrix.loc[father, son]
+            son = father
+            father = self._parent[father]
+        if son == src:
+            return global_t
+        else:
+            raise RuntimeError("src does not match identified source, double check algorithm")
+            
                 
     def simulate_edge(self, infected, new_infection):
         self._simulated[(infected, new_infection)] = True
@@ -385,6 +409,7 @@ class Graph(object):
             
     def is_connected(self):
         if self.connected is not None:
+            print("Returning Cached Result")
             return self.connected
 
         visited = set()
@@ -394,7 +419,8 @@ class Graph(object):
         frontier = set(map(lambda x: x[0], self._graph[current]))
         while True:
             visited.add(current)
-            frontier = set(map(lambda x: x[0], self._graph[current])) - visited
+            new_nodes = set(map(lambda x: x[0], self._graph[current]))
+            frontier = frontier.union(new_nodes) - visited
             if frontier: # empty check
                 current = frontier.pop()
             else:
@@ -446,12 +472,18 @@ def erdos_renyi_generator(n, p, edge_dst=None, directed=False):
     return Graph(edge_set, directed=directed)
     
 # assuming we're forcing connectivity in ER
-def erdos_renyi_simulation_trial(n, p, src, dst, iters=10**3, **kwargs):
+def erdos_renyi_simulation_trial(n, p, src, dst, iters=10**3, bidirectional_opt=False, log=False, **kwargs):
     path_counts = defaultdict(lambda: 0)
     path_times = defaultdict(list)
     for i in range(iters):
+        if log == True:
+            print(i)
         h = erdos_renyi(n, p, **kwargs)
-        time = h.simulate_gossip_rv(src, dst)
+        time = None
+        if bidirectional_opt:
+            time = h.birectional_simulate_gossip_rv(src, dst)
+        else:
+            time = h.simulate_gossip_rv(src, dst)
         path = tuple(h.construct_path(src, dst)) # Randomly fails here?
         path_counts[path] = path_counts[path] + 1
         path_times[path].append(time)

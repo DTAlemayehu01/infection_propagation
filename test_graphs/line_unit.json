@@ -1,0 +1,72 @@
+{
+    "0,1": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "1,2": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "2,3": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "3,4": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "4,5": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "5,6": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "6,7": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "7,8": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "8,9": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    },
+    "9,10": {
+        "distribution": "U",
+        "parameters": {
+            "start": 0.0,
+            "stop": 2.0
+        }
+    }
+}
