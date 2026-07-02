@@ -52,7 +52,9 @@ class Graph(object):
         
     def add_connections(self, edge_set):
         for node1, node2, wt in edge_set:
+            self.edge_set.add((node1,node2,wt))
             self.add_edge(node1,node2, wt)
+        self._adjency_matrix = self.construct_matrix(self.edge_set)
             
     def add_edge(self, src, dst, wt):
         self.connected = None
@@ -71,9 +73,16 @@ class Graph(object):
         df = df.fillna(np.inf)
         return df
 
+    def __check_node_existence(self, src, dst):
+        if not set(src).issubset(self.vertices()):
+            raise ValueError(f"A source node {src} is not in the graph")
+        if not set(dst).issubset(self.vertices()):
+            raise ValueError(f"A destination node {dst} is not in the graph")
+
     # Make sure graph is using scipy.stats library
     # TODO: Use heapq
     # TODO: Refactor
+    # TODO: Make multidimensional?
     def simulate_gossip_rv(self, src, dst, log=False, preserve_times=False):
         self.reset_simulation()
         
@@ -88,10 +97,7 @@ class Graph(object):
             self._infected[node] = True
             self._node_infect_time[node] = 0
             
-        if not set(src).issubset(self.vertices()):
-            raise ValueError(f"A source node {src} is not in the graph")
-        if not set(dst).issubset(self.vertices()):
-            raise ValueError(f"A destination node {dst} is not in the graph")
+        self.__check_node_existence(src, dst)
 
         if preserve_times == True:
             adj_matrix_dupe = self._adjency_matrix.copy()
@@ -154,37 +160,46 @@ class Graph(object):
     # - I'm opting to change behaviors since handling min-edge subtraction
     # - Is far more complex when searching two directions
     # - And was done to track time as well
-    # NOTE: Will Always "presevere_time
+    # NOTE: Will Always "presevere_time"
     def birectional_simulate_gossip_rv(self, src, dst, log=False):
         self.reset_simulation()
 
-        if not set(src).issubset(self.vertices()):
-            raise ValueError(f"A source node {src} is not in the graph")
-        if not set(dst).issubset(self.vertices()):
-            raise ValueError(f"A destination node {dst} is not in the graph")
+        # src = np.array([src]).flatten()[0]
+        src = np.array([src]).flatten()
+        dst = np.array([dst]).flatten()
+        self.__check_node_existence(src, dst)
+        # TODO: interop with multiple sources
+        src = src[0]
 
         self._infected[src] = True
         self._node_infect_time[src] = 0
 
-        global_t = 0
+        # Forward (single-src)
         infection_frontier_forwards = []
-        infection_frontier_backwards = []
- 
         heapq.heappush(infection_frontier_forwards, (0, src))
-        heapq.heappush(infection_frontier_backwards, (0, dst))
-        
         dist_src = defaultdict(lambda: np.inf)
         dist_src[src] = 0
+
+        # Backwards
+        infection_frontier_backward_heaps = []
+        dist_dsts = []
+        parent_dsts = []
+        for node in dst:
+            heap = []
+            heapq.heappush(heap, (0, node))
+            infection_frontier_backward_heaps.append(heap)
+
+            dist_dst = defaultdict(lambda: np.inf)
+            dist_dst[node] = 0
+            dist_dsts.append(dist_dst)
+
+            parent_dst = defaultdict(lambda : None)
+            parent_dsts.append(parent_dst)
         
-        dist_dst = defaultdict(lambda: np.inf)
-        dist_dst[dst] = 0
-        
-        parent_dst = defaultdict(lambda : None)
-        mu = np.inf
-        meeting_node = None
-        while infection_frontier_backwards and infection_frontier_forwards:
+        mu = np.full(len(dst), np.inf)
+        meeting_nodes = [None]*len(dst)
+        while any(infection_frontier_backward_heaps) and infection_frontier_forwards:
             v_src = heapq.heappop(infection_frontier_forwards)[1]
-            v_dst = heapq.heappop(infection_frontier_backwards)[1]
             
             for u in self.vertices():
                 item = self._adjency_matrix.loc[v_src,u]
@@ -194,36 +209,57 @@ class Graph(object):
 
                     alt = dist_src[v_src] + item
                     if alt < dist_src[u]:
-                        self._parent[u] = v_src
+                        self._parent[str(u)] = str(v_src)
                         dist_src[u] = alt
                         heapq.heappush(infection_frontier_forwards, (alt, u))
-                    if u in dist_dst.keys() and dist_src[v_src] + item + dist_dst[u] < mu:
-                        mu = dist_src[v_src] + item + dist_dst[u]
-                        meeting_node = u
-                        
-            for u in self.vertices():
-                item = self._adjency_matrix.loc[v_dst,u]
-                if item != np.inf:
-                    if not self._simulated[(v_dst, u)]:
-                        item = self.simulate_edge(v_dst,u)
+                    for i, dist_dst in enumerate(dist_dsts):
+                        if u in dist_dst.keys() and dist_src[v_src] + item + dist_dst[u] < mu[i]:
+                            mu[i] = dist_src[v_src] + item + dist_dst[u]
+                            meeting_nodes[i] = u
+                            
+            for i, heap in enumerate(infection_frontier_backward_heaps):
+                if not heap:
+                    continue
+                v_dst = heapq.heappop(heap)[1]
+                dist_dst = dist_dsts[i]
+                parent_dst = parent_dsts[i]
 
-                    alt = dist_dst[v_dst] + item
-                    if alt < dist_dst[u]:
-                        parent_dst[u] = v_dst
-                        dist_dst[u] = alt
-                        heapq.heappush(infection_frontier_backwards, (alt, u))
-                    if u in dist_src.keys() and dist_dst[v_dst] + item + dist_src[u] < mu:
-                        mu = dist_dst[v_dst] + item + dist_src[u]
-                        meeting_node = u                        
+                for u in self.vertices():
+                    item = self._adjency_matrix.loc[v_dst,u]
+                    if item != np.inf:
+                        if not self._simulated[(v_dst, u)]:
+                            item = self.simulate_edge(v_dst,u)
+
+                        alt = dist_dst[v_dst] + item
+                        if alt < dist_dst[u]:
+                            parent_dst[u] = v_dst
+                            dist_dst[u] = alt
+                            heapq.heappush(heap, (alt, u))
+                            
+                        if u in dist_src.keys() and dist_dst[v_dst] + item + dist_src[u] < mu[i]:
+                            mu[i] = dist_dst[v_dst] + item + dist_src[u]
+                            meeting_nodes[i] = u                        
                         
-            if dist_src[v_src] + dist_dst[v_dst] >= mu:
-                # see if we share edge with optimal path to reconstruct backwards path
-                if meeting_node is not None:
-                    node = meeting_node
-                    while parent_dst[node] is not None:
-                        self._parent[parent_dst[node]] = node
-                        node = parent_dst[node]
-                return self.construct_time_from_path(src, dst)
+            min_backward_tops = [
+                heap[0][0] if heap else np.inf
+                for heap in infection_frontier_backward_heaps
+            ]
+            if all(
+                dist_src[v_src] + min_backward_tops[i] >= mu[i]
+                for i in range(len(dst))
+            ):
+                break
+
+        # see if we share edge with optimal path to reconstruct backwards path
+        for i, meeting_node in enumerate(meeting_nodes):
+            if meeting_node is not None:
+                parent_dst = parent_dsts[i]
+                node = meeting_node
+                while parent_dst[node] is not None:
+                    self._parent[str(parent_dst[node])] = str(node)
+                    node = parent_dst[node]
+            # return self.construct_time_from_path(src, dst)
+        return mu[0] if len(dst) == 1 else mu
             
     # Input src to track path parity
     def construct_time_from_path(self, src, dst):
@@ -340,6 +376,8 @@ class Graph(object):
         while pq:
             v = heapq.heappop(pq)[1]
             if v == dst:
+                if dist[v] == None:
+                    return self._adjency_matrix.loc[src,dst]
                 return dist[v]
             for u in self.vertices():
                 item = self._adjency_matrix.loc[v,u]
@@ -349,7 +387,7 @@ class Graph(object):
                         self._parent[u] = v
                         dist[u] = alt
                         heapq.heappush(pq, (alt, u))
-
+        
     def reset_simulation(self):
         keys = self.vertices()
         for key in keys:
@@ -426,7 +464,12 @@ class Graph(object):
             else:
                 connection = visited == node_list
                 self.connected = connection
-                return connection,visited,node_list
+                return connection
+            
+    def get_unweighted_adjacency(self):
+        adj = self._adjency_matrix.replace(np.inf, 0)
+        adj = adj.where(adj == 0, 1)
+        return adj.astype("int32")
             
     # Laplacian depends on whether we choose out vs in degree matrix
     def is_connected_laplacian(self):
@@ -446,14 +489,16 @@ class Graph(object):
     
 
 def erdos_renyi(n, p, force_connection=True, max_attempts=10**3, **kwargs):
-    G = erdos_renyi_generator(n, p, **kwargs)
+    G = erdos_renyi_helper(n, p, **kwargs)
+    if not force_connection:
+        return G
     for _ in range(max_attempts):
         if G.is_connected() and n == len(G.vertices()):
             return G
-        G = erdos_renyi_generator(n, p, **kwargs)
+        G = erdos_renyi_helper(n, p, **kwargs)
     raise ERMaxAttempts("ER Graph not created, max attempts reached")
     
-def erdos_renyi_generator(n, p, edge_dst=None, directed=False):
+def erdos_renyi_helper(n, p, edge_dst=None, directed=False):
     verticies = list(range(n))
     edge = None
     if directed == False:
@@ -472,13 +517,70 @@ def erdos_renyi_generator(n, p, edge_dst=None, directed=False):
     return Graph(edge_set, directed=directed)
     
 # assuming we're forcing connectivity in ER
-def erdos_renyi_simulation_trial(n, p, src, dst, iters=10**3, bidirectional_opt=False, log=False, **kwargs):
+def erdos_renyi_simulation_trial(n, p, src, dst, iters=10**3, bidirectional_opt=True, log=False, **kwargs):
     path_counts = defaultdict(lambda: 0)
     path_times = defaultdict(list)
     for i in range(iters):
         if log == True:
             print(i)
         h = erdos_renyi(n, p, **kwargs)
+        time = None
+        if bidirectional_opt:
+            time = h.birectional_simulate_gossip_rv(src, dst)
+        else:
+            time = h.simulate_gossip_rv(src, dst)
+        path = tuple(h.construct_path(src, dst)) # Randomly fails here?
+        path_counts[path] = path_counts[path] + 1
+        path_times[path].append(time)
+    return path_counts, path_times
+
+def random_tree_generator(n, branch, edge_dst=None, directed=False):
+    nodes = list(range(n))
+    leaves = list([nodes.pop()])
+    edge_set = {}
+    while nodes and leaves:
+        curr = leaves.pop()
+        offspring = 0
+        if leaves:
+            offspring = np.random.randint(branch)
+        else: 
+            offspring = np.random.randint(1,branch)
+        for _ in range(offspring):
+            if not nodes:
+                break
+            node = nodes.pop()
+            leaves.append(node)
+            edge_paring = f"{curr},{node}"
+            if edge_dst is not None and edge_paring in edge_dst.keys():
+                edge_set[edge_paring] = edge_dst[edge_paring]
+            else: 
+                edge_set[edge_paring] = { "distribution": "E", "parameters": { "lambda" : 1.0 }} 
+    return Graph(edge_set, directed=directed)
+
+def random_tree_simulation_trial(n, branch, src, dst, iters=10**3, bidirectional_opt=True, log=False, **kwargs):
+    path_counts = defaultdict(lambda: 0)
+    path_times = defaultdict(list)
+    for i in range(iters):
+        if log == True:
+            print(i)
+        h = random_tree_generator(n, branch, **kwargs)
+        time = None
+        if bidirectional_opt:
+            time = h.birectional_simulate_gossip_rv(src, dst)
+        else:
+            time = h.simulate_gossip_rv(src, dst)
+        path = tuple(h.construct_path(src, dst)) # Randomly fails here?
+        path_counts[path] = path_counts[path] + 1
+        path_times[path].append(time)
+    return path_counts, path_times
+
+def fixed_tree_simulation_trial(n, branch, src, dst, iters=10**3, bidirectional_opt=True, log=False, **kwargs):
+    path_counts = defaultdict(lambda: 0)
+    path_times = defaultdict(list)
+    h = random_tree_generator(n, branch, **kwargs)
+    for i in range(iters):
+        if log == True:
+            print(i)
         time = None
         if bidirectional_opt:
             time = h.birectional_simulate_gossip_rv(src, dst)
