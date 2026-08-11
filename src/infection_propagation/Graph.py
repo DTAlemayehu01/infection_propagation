@@ -236,7 +236,7 @@ class Graph(object):
 
                     alt = dist_src[v_src] + item
                     if alt < dist_src[u]:
-                        self._parent[str(u)] = str(v_src)
+                        self._parent[u] = v_src
                         dist_src[u] = alt
                         heapq.heappush(infection_frontier_forwards, (alt, u))
                     for i, dist_dst in enumerate(dist_dsts):
@@ -288,7 +288,7 @@ class Graph(object):
                 parent_dst = parent_dsts[i]
                 node = meeting_node
                 while parent_dst[node] is not None:
-                    self._parent[str(parent_dst[node])] = str(node)
+                    self._parent[parent_dst[node]] = node
                     node = parent_dst[node]
             # return self.construct_time_from_path(src, dst)
         return mu[0] if len(dst) == 1 else mu
