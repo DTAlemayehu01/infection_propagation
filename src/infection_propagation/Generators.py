@@ -2,12 +2,6 @@ from infection_propagation import Graph
 from collections import defaultdict
 import random
 
-# TODO: Utilize Abstract Classes
-# TODO: FIX GRAPH SIMULATIONS FOR ER AND TREE
-# Abstract:
-# Constructor
-# Simulator (fixed vs resimed)
-
 
 class GraphModel(object):
     def __init__(self, **kwargs):
@@ -30,7 +24,6 @@ class GraphModel(object):
             test_src = self.sample_nodes(srcs)
         return test_src, observers
 
-    # TODO: Add path times and counts?
     def simulation_trial(
         self,
         src,
@@ -164,26 +157,17 @@ class LineIIDExpGraph(GraphModel):
     def __construct(self):
         return self.graph_generate()
 
-    def get_source_observer_pairs(self, srcs, dsts, **kwargs):
+    def get_source_observer_pairs(self, srcs, dsts, observer_constraints, **kwargs):
         test_src = self.sample_nodes(srcs)
         observers = None
-        end_points = kwargs.get("end_points", False)
-        vertex_end_points = [0, self.n - 1]
-        if end_points:
-            if dsts == 2:
-                observers = vertex_end_points
-            else:
-                observers = [random.choice(vertex_end_points)]
+        if observer_constraints:
+            observers = observer_constraints(self, observers)
         else:
             observers = self.sample_nodes(dsts)
-
         while test_src in observers:
             test_src = self.sample_nodes(srcs)
 
-        if dsts == 1:
-            return test_src, observers[0]
-        else:
-            return test_src, observers
+        return test_src, observers
 
     def graph_generate(self, edge_dst=None, directed=False):
         edges = [(i, i + 1) for i in range(self.n - 1)]
@@ -201,24 +185,23 @@ class LineIIDExpGraph(GraphModel):
 
 
 class CircleIIDExpGraph(GraphModel):
-    def __init__(self, n, edge_dst=None, directed=False, **kwargs):
+    def __init__(
+        self, n, edge_dst=None, directed=False, edge_constraint=None, **kwargs
+    ):
         self.n = n
         self.graph = self.__construct()
 
     def __construct(self):
         return self.graph_generate()
 
-    def get_source_observer_pairs(self, srcs, dsts, **kwargs):
+    def get_source_observer_pairs(
+        self, srcs, dsts, observer_constraints=None, **kwargs
+    ):
         test_src = self.sample_nodes(srcs)
         observers = self.sample_nodes(dsts)
 
-        length = self.n
-        break_symmetry = kwargs.get("break_symmetry", False)
-        while break_symmetry and dsts == 2:
-            if abs(observers[0] - observers[1]) == length / 2:
-                observers = self.sample_nodes(dsts)
-            else:
-                break
+        if observer_constraints:
+            observers = observer_constraints(self, observers)
 
         while test_src in observers:
             test_src = self.sample_nodes(srcs)
