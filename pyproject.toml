@@ -12,6 +12,7 @@ dependencies = [
     "pandas (>=3.0.1,<4.0.0)",
     "scipy (>=1.17.1,<2.0.0)",
     "matplotlib (>=3.10.8,<4.0.0)",
+    "networkx", 
     "tree-source-localization (>=1.0.4,<2.0.0)"
 ]
 

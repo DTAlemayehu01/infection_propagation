@@ -47,11 +47,11 @@ def process_distribution_params(function_dict):
     return distribution
 
 
-def graph_data(edge_json):
+def graph_data(edge_set):
     edge_list = []
     node_attr = {}
     edge_attr = {}
-    for key, value in edge_json.items():
+    for key, value in edge_set.items():
         edge = key.split(",")
         edge_list.append(edge)
         distribution = process_distribution_params(value)
@@ -65,34 +65,32 @@ def graph_data(edge_json):
             "parent": None,
             "node_infect_time": -1,
         }
-        edge_attr[edge] = {
+        edge_attr[edge[0], edge[1]] = {
             "simulated": False,
             "weight_function": distribution,
-            "weight_value": -1,
-            "weight": simulate_edge,
+            "weight": -1,
         }
     return edge_list, node_attr, edge_attr
 
 
 def simulate_edge(src, dst, edge):
     if edge["simulated"]:
-        return edge["weight_value"]
+        return edge["weight"]
     else:
         edge["simulated"] = True
         edge["weight_function"].sample()
-        edge["weight_value"] = edge["weight_function"].delay
-        return edge["weight_value"]
+        edge["weight"] = edge["weight_function"].delay
+        return edge["weight"]
 
 
 class Graph(object):
 
-    def __init__(self, edge_json, directed=False):
-        # self.edge_set = self.make_edge_set(edge_json)
-        edge_list, node_attr, edge_attr = graph_data(edge_json)
+    def __init__(self, edge_set, directed=False):
+        edge_list, node_attr, edge_attr = graph_data(edge_set)
         if directed:
-            self.graph = nx.DiGraph(graph_dictionary)
+            self.graph = nx.DiGraph(edge_list)
         else:
-            self.graph = nx.Graph(graph_dictionary)
+            self.graph = nx.Graph(edge_list)
         nx.set_node_attributes(self.graph, node_attr)
         nx.set_edge_attributes(self.graph, edge_attr)
 
@@ -101,7 +99,7 @@ class Graph(object):
 
     # Node Statistics
     def vertices(self):
-        return self.graph.nodes()
+        return sorted([x for x in self.graph.nodes()])
 
     def edge_density(self):
         return nx.density(self.graph)
@@ -129,10 +127,24 @@ class Graph(object):
             dst,
             simulated=False,
             weight_function=wt,
-            weight_value=-1,
-            weight=simulate_edge,
+            weight=-1,
         )
 
+    # Graph Statistics
+    def is_connected(self):
+        return nx.is_connected(self.graph)
+
+    def get_adjacency(self, unweighted=True):
+        if unweighted:
+            return nx.to_pandas_adjacency(self.graph, weight=None)
+        else:
+            return nx.to_pandas_adjacency(self.graph, weight="weight")
+
+    def enumerated_nodes(self):
+        nodes = enumerate(sorted(self.vertices()))
+        return {x: i for i, x in nodes}
+
+    # simulations
     def reset_simulation(self):
         for edge in self.graph.edges():
             self.graph.edges[edge]["simulated"] = False
@@ -141,36 +153,42 @@ class Graph(object):
         self._path_counts = defaultdict(lambda: 0)
         self._path_times = defaultdict(list)
 
-    # one src, one-many dst
-    def simulate_gossip_rv(self, src, dst):
-        self.reset_simulation()
-        if len(src) == 1 and len(dst) == 1:
-            length, path = nx.bidirectional_dijkstra(self.graph, src, dst)
-            return length
-        else:
-            lengths = nx.shortest_path_length(self.graph, src)
-            times = [lengths[end] for end in dst]
-            return times
-
-    # Input src to track path parity
-    def construct_time_from_path(self, src, dst):
-        length, path = nx.bidirectional_dijkstra(self.graph, src, dst)
-        return length
-
     def sim_all(self, reset=False):
         if reset:
             self.reset_simulation()
         for edge in self.graph.edges():
-            self.simulate_edge(edge[0], edge[1], self.graph.edges[edge])
+            simulate_edge(edge[0], edge[1], self.graph.edges[edge])
+
+    # Input src to track path parity
+    def construct_time_from_path(self, src, dst):
+        length, path = nx.bidirectional_dijkstra(
+            self.graph, src, dst, weight=simulate_edge
+        )
+        return length
 
     def construct_path(self, src, dst):
-        if len(src) == 1 and len(dst) == 1:
-            length, path = nx.bidirectional_dijkstra(self.graph, src, dst)
+        if type(src) != set and type(dst) != set:
+            length, path = nx.bidirectional_dijkstra(
+                self.graph, src, dst, weight=simulate_edge
+            )
             return path
         else:
-            paths = nx.shortest_path(self.graph, src)
+            paths = nx.shortest_path(self.graph, src, weight=simulate_edge)
             paths = [paths[end] for end in dst]
             return paths
+
+    # one src, one-many dst
+    def simulate_gossip_rv(self, src, dst):
+        self.reset_simulation()
+        if type(src) != set and type(dst) != set:
+            length, path = nx.bidirectional_dijkstra(
+                self.graph, src, dst, weight=simulate_edge
+            )
+            return length
+        else:
+            lengths = nx.shortest_path_length(self.graph, src, weight=simulate_edge)
+            times = [lengths[end] for end in dst]
+            return times
 
     # Path is manually constructed from algorithm
     def simulation_trial(self, src, dst, iters=10**3):
@@ -180,12 +198,3 @@ class Graph(object):
             self._path_counts[path] = self._path_counts[path] + 1
             self._path_times[path].append(t)
             self.reset_simulation()
-
-    def get_adjacency(self, unweighted=True):
-        if unweighted:
-            return nx.to_pandas_adjacency(self.graph, weight=None)
-        else:
-            return nx.to_pandas_adjacency(self.graph)
-
-    def is_connected(self):
-        return nx.is_connected(self.graph)

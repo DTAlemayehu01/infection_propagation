@@ -11,7 +11,7 @@ class GraphModel(object):
         return
 
     def sample_nodes(self, n, **kwargs):
-        vertices = list(self.graph.vertices())
+        vertices = self.graph.vertices()
         if n > 1:
             return random.sample(vertices, n)
         else:
@@ -22,14 +22,13 @@ class GraphModel(object):
         observers = self.sample_nodes(dsts)
         while test_src in observers:
             test_src = self.sample_nodes(srcs)
-        return test_src, observers
+        return test_src, set(observers)
 
     def simulation_trial(
         self,
         src,
         dst,
         iters=10**3,
-        bidirectional_opt=True,
         fixed_graph=False,
         log=False,
         **kwargs,
@@ -44,10 +43,7 @@ class GraphModel(object):
                 self.__construct()
                 h = self.graph
             time = None
-            if bidirectional_opt:
-                time = h.birectional_simulate_gossip_rv(src, dst)
-            else:
-                time = h.simulate_gossip_rv(src, dst)
+            time = h.simulate_gossip_rv(src, dst)
             # path = tuple(h.construct_path(src, dst))  # Randomly fails here?
             # path_counts[path] = path_counts[path] + 1
             # path_times[path].append(time)
@@ -68,7 +64,7 @@ class ErdosRenyiGraph(GraphModel):
         return
 
     def __construct(self):
-        return self.erdos_reyni(
+        return self.erdos_renyi(
             self.n,
             self.p,
             force_connection=self.force_connection,
@@ -167,7 +163,7 @@ class LineIIDExpGraph(GraphModel):
         while test_src in observers:
             test_src = self.sample_nodes(srcs)
 
-        return test_src, observers
+        return test_src, set(observers)
 
     def graph_generate(self, edge_dst=None, directed=False):
         edges = [(i, i + 1) for i in range(self.n - 1)]
@@ -206,7 +202,7 @@ class CircleIIDExpGraph(GraphModel):
         while test_src in observers:
             test_src = self.sample_nodes(srcs)
 
-        return test_src, observers
+        return test_src, set(observers)
 
     def graph_generate(self, edge_dst=None, directed=False):
         edges = [(i, (i + 1) % (self.n)) for i in range(self.n)]
